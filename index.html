@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#101713">
+<title>Meu Treino — Hipertrofia</title>
+<style>
+:root{--bg:#0c100e;--panel:#151b17;--panel2:#1d2620;--text:#f4f7f4;--muted:#a5b2a8;--green:#a7f3c0;--green2:#17472d;--line:#2b382f}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+.wrap{max-width:760px;margin:auto;padding:20px 16px 40px}.top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin:4px 0 18px}
+.kicker{font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:var(--green);font-weight:800}.title{font-size:30px;line-height:1.1;margin:5px 0 6px;letter-spacing:-.04em}.sub{color:var(--muted);font-size:14px}
+.pill{border:1px solid var(--line);border-radius:999px;padding:8px 11px;color:var(--green);font-size:12px;font-weight:700;white-space:nowrap}
+.days{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;margin:20px 0 16px}
+.day{border:1px solid var(--line);background:var(--panel);color:var(--muted);border-radius:13px;padding:10px 2px;cursor:pointer;text-align:center;font-weight:800}
+.day small{display:block;font-size:10px;font-weight:600;margin-top:3px}.day.active{background:var(--green);border-color:var(--green);color:#102016}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:17px;margin:12px 0}
+.panelhead{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.panel h2{margin:0 0 4px;font-size:22px;letter-spacing:-.03em}.progress{font-size:12px;color:var(--muted);white-space:nowrap}
+.track{height:6px;border-radius:99px;background:#2b382f;overflow:hidden;margin:13px 0 4px}.fill{height:100%;width:0;background:var(--green);transition:width .2s}
+.exercise{display:flex;gap:12px;align-items:flex-start;padding:14px 0;border-bottom:1px solid var(--line)}.exercise:last-child{border-bottom:0}
+input[type=checkbox]{appearance:none;flex:0 0 23px;width:23px;height:23px;border:1.5px solid #6f8174;border-radius:7px;margin:2px 0 0;cursor:pointer;background:transparent}
+input[type=checkbox]:checked{background:var(--green);border-color:var(--green)}input[type=checkbox]:checked:after{content:"✓";display:block;color:#102016;font-weight:900;text-align:center;line-height:21px}
+.exercise.done .exname{text-decoration:line-through;color:#8b9b90}.exname{font-weight:750;font-size:15px}.sets{color:var(--green);font-size:13px;font-weight:700;margin-top:3px}
+.note{font-size:12px;color:var(--muted);margin-top:4px}
+.cardio{background:var(--green2);border:1px solid #28613f;border-radius:15px;padding:14px;margin-top:14px}.cardio strong{display:block;color:var(--green);margin-bottom:3px}.cardio span{font-size:14px}
+.notice{color:var(--muted);font-size:12px;margin:12px 2px}.exercise-art{width:88px;min-width:88px;height:88px;display:flex;align-items:center;justify-content:center;background:#f1f2ef;border:1px solid #c7cec9;border-radius:10px;overflow:hidden;position:relative}.exercise-photo{width:100%;height:100%;object-fit:contain;display:block}.photo-unavailable-label{display:none;font-size:9px;color:#59615f;text-align:center}.photo-unavailable .photo-unavailable-label{display:block}.photo-unavailable{background:#e8ece8}.exercise-main{flex:1;min-width:0}.exercise-info{display:flex;gap:12px;align-items:flex-start}.logbox{margin-top:10px;padding:11px;background:#101612;border:1px solid var(--line);border-radius:12px}.logtitle{font-size:12px;color:var(--muted);font-weight:700;margin-bottom:7px}.loggrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.logfield label{display:block;color:var(--muted);font-size:10px;margin-bottom:4px}.logfield input{width:100%;min-width:0;background:var(--panel2);border:1px solid #39483d;border-radius:8px;color:var(--text);padding:9px 7px;font:inherit;font-size:14px}.logfield input:focus{outline:1px solid var(--green);border-color:var(--green)}.history{font-size:11px;color:var(--muted);margin-top:7px}.actions{display:flex;gap:9px;margin-top:12px}.btn{flex:1;border:1px solid var(--line);background:var(--panel2);color:var(--text);padding:12px;border-radius:12px;font-weight:750;cursor:pointer}.btn.primary{background:var(--green);color:#102016;border-color:var(--green)}
+.footer{text-align:center;color:#718076;font-size:11px;margin-top:24px}
+.toolsgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:12px}
+.toolsgrid .btn{font-size:13px;padding:11px 8px}
+.statsgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:12px 0}
+.stat{background:var(--panel2);border:1px solid var(--line);border-radius:13px;padding:12px}
+.stat small{display:block;color:var(--muted);font-size:11px}.stat strong{display:block;font-size:21px;margin-top:3px}
+.chartrow{display:grid;grid-template-columns:minmax(85px,1fr) 2fr auto;gap:9px;align-items:center;margin:10px 0;font-size:12px}
+.chartlabel{overflow-wrap:anywhere;color:var(--text)}.barbg{height:10px;background:#2b382f;border-radius:99px;overflow:hidden}.barfill{height:100%;background:var(--green);border-radius:99px}
+.record{padding:11px 0;border-bottom:1px solid var(--line)}.record:last-child{border-bottom:0}.record strong{display:block}.record span{font-size:12px;color:var(--muted)}
+.fileinput{display:none}.smallnote{font-size:12px;color:var(--muted);margin-top:9px}
+@media(max-width:430px){.exercise-art{width:76px;min-width:76px;height:80px}.exercise{gap:8px;padding:10px 0}.loggrid{grid-template-columns:repeat(2,minmax(0,1fr))}.logfield:last-child{grid-column:1/-1}.toolsgrid{grid-template-columns:1fr}.chartrow{grid-template-columns:minmax(75px,1fr) 1.5fr auto}}
+@media(min-width:600px){.wrap{padding-top:32px}.day{padding:12px 5px}.title{font-size:36px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div><div class="kicker">Plano de hipertrofia</div><h1 class="title">Meu treino<span style="color:var(--green)">.</span></h1><div class="sub">Treino ilustrado + cargas + repetições · ciclo inicial de 8 semanas</div></div>
+    <div class="pill">80,9 kg · base</div>
+  </header>
+  <div class="days" id="days" aria-label="Escolher dia"></div>
+  <section class="panel">
+    <div class="panelhead"><div><h2 id="dayTitle">Treino do dia</h2><div class="sub" id="daySubtitle">Marque cada exercício concluído.</div></div><div class="progress" id="progress">0/0 concluídos</div></div>
+    <div class="track"><div class="fill" id="fill"></div></div>
+    <div id="exercises"></div>
+    <div class="cardio"><strong>🚴 Cardio</strong><span id="cardioText"></span></div>
+    <div id="extraNote" class="notice"></div>
+    <div class="actions"><button class="btn" id="reset">Desmarcar dia</button><button class="btn primary" id="today">Ir para hoje</button></div>
+  </section>
+  <section class="panel" id="progressPanel">
+    <div class="panelhead"><div><h2>Minha evolução</h2><div class="sub">Resumo dos registros salvos neste aparelho</div></div></div>
+    <div class="statsgrid">
+      <div class="stat"><small>Exercícios registrados</small><strong id="statExercises">0</strong></div>
+      <div class="stat"><small>Sessões com registros</small><strong id="statSessions">0</strong></div>
+    </div>
+    <h3 style="font-size:15px;margin:18px 0 8px">Volume registrado por exercício</h3>
+    <div class="sub">Carga × repetições registradas por dia (estimativa, não volume fisiológico completo).</div>
+    <div id="charts"></div>
+    <h3 style="font-size:15px;margin:18px 0 8px">Recordes pessoais</h3>
+    <div class="sub">Maior carga e maior total de repetições registradas para cada exercício.</div>
+    <div id="records"></div>
+    <div class="toolsgrid">
+      <button class="btn primary" id="exportCsv">Exportar CSV · 7 dias</button>
+      <button class="btn" id="backupJson">Backup completo JSON</button>
+      <button class="btn" id="restoreJson">Restaurar backup</button>
+      <button class="btn" id="exportAllCsv">Exportar todo o histórico CSV</button>
+    </div>
+    <input class="fileinput" id="restoreFile" type="file" accept=".json,application/json">
+    <div class="smallnote" id="backupStatus" role="status">Os dados antigos serão mantidos; o backup inclui registros, marcações e versão do formato.</div>
+  </section>
+  <p class="notice">Seus dados ficam neste navegador. Faça backups periódicos e antes de trocar de aparelho ou limpar os dados do Safari.</p>
+  <div class="footer">Checklist, cargas, repetições, gráficos, recordes e exportação — imagens: Free Exercise DB (Yuhonas). Dados mantidos neste navegador. Imagens: Free Exercise DB (Yuhonas), domínio público.</div>
+</div>
+<script>
+const plans=[
+{id:"SEG",label:"Peito",title:"Peitoral A + deltoide lateral",items:[["Supino inclinado na máquina ou Smith","3 × 6–10"],["Chest press reto na máquina","3 × 8–12"],["Cross de baixo para cima","2 × 10–15"],["Elevação lateral na máquina ou polia","3 × 12–20"]],cardio:"10–15 min de bicicleta ou esteira leve a moderada."},
+{id:"TER",label:"Costas",title:"Costas A + deltoide posterior",items:[["Puxada alta com pegada neutra","3 × 8–12"],["Remada com apoio no peito","3 × 8–12"],["Remada sentada na polia","2 × 10–15"],["Crucifixo inverso na máquina","3 × 12–20"]],cardio:"10–15 min de esteira ou bicicleta moderada."},
+{id:"QUA",label:"Pernas",title:"Pernas completas",items:[["Hack squat ou leg press","3 × 6–10"],["Cadeira flexora","3 × 8–12"],["Levantamento romeno*","2 × 8–12"],["Cadeira extensora","2 × 10–15"],["Panturrilha em pé","3 × 10–15"]],cardio:"Opcional: 0–5 min bem leve.",note:"*Só faça o levantamento romeno se conseguir segurar a carga sem dor no cotovelo. Se incomodar, substitua por extensão de quadril na máquina."},
+{id:"QUI",label:"Peito+",title:"Peitoral B + tríceps",items:[["Supino inclinado com halteres ou máquina","3 × 8–12"],["Crucifixo na máquina","3 × 10–15"],["Tríceps na polia com corda","3 × 10–15"],["Extensão de tríceps unilateral na polia","2 × 12–15"]],cardio:"10–15 min de bicicleta ou esteira moderada."},
+{id:"SEX",label:"Costas",title:"Costas B + bíceps condicionado à dor",items:[["Puxada alta na máquina","3 × 8–12"],["Remada unilateral na polia","3 × 10–12 por lado"],["Pullover na polia com braços quase estendidos","2 × 12–15"],["Bíceps — sem carga pesada até avaliação da dor","Evitar movimentos que provoquem dor"]],cardio:"10–15 min de bicicleta ou esteira moderada.",note:"Dor persistente perto do cotovelo: evite roscas pesadas e procure avaliação profissional."},
+{id:"SÁB",label:"Ombros",title:"Ombros + complementos",items:[["Elevação lateral na máquina","3 × 12–20"],["Crucifixo inverso na polia","3 × 12–20"],["Abdutora","2 × 12–20"],["Abdominal no banco declinado","3 × 10–20"],["Abdominal na polia","2 × 12–20"]],cardio:"Opcional: 0–10 min confortável."},
+{id:"DOM",label:"Ativo",title:"Recuperação ativa",items:[["Caminhada ou bicicleta leve","20–30 min"],["Mobilidade confortável","Opcional"],["Preparar a próxima semana","Opcional"]],cardio:"Já incluído acima: mantenha a intensidade leve."}
+];
+const dayOrder=["DOM","SEG","TER","QUA","QUI","SEX","SÁB"];
+const keys=(key)=>{try{return JSON.parse(localStorage.getItem(key)||"{}")}catch(e){return {}}};
+let checks=keys("meuTreinoChecks");
+let logs=keys("meuTreinoLogs");
+let selected=dayOrder[new Date().getDay()];
+const $=id=>document.getElementById(id);
+function save(){localStorage.setItem("meuTreinoChecks",JSON.stringify(checks))}
+function saveLogs(){localStorage.setItem("meuTreinoLogs",JSON.stringify(logs))}
+function todayKey(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`}
+function safe(v){return String(v??"").replaceAll("&","&amp;").replaceAll('"',"&quot;").replaceAll("<","&lt;").replaceAll(">","&gt;")}
+function allExerciseEntries(){
+ const out=[];
+ Object.keys(logs).sort().forEach(date=>{
+   const daily=logs[date]||{};
+   Object.keys(daily).forEach(k=>{
+     const [dayId,idxText]=k.split("-");
+     const p=plans.find(x=>x.id===dayId), idx=Number(idxText), it=p&&p.items[idx];
+     if(!it) return;
+     const e=daily[k]||{};
+     const reps=String(e.reps||"").split(/[,\s;/]+/).map(x=>Number(x.trim())).filter(x=>Number.isFinite(x)&&x>0);
+     const load=Number(e.load)||0;
+     const totalReps=reps.reduce((a,b)=>a+b,0);
+     const volume=load*totalReps;
+     if(e.load!==undefined||e.reps||e.rir!==undefined){
+       out.push({date,dayId,key:k,exercise:it[0],prescription:it[1],load,reps:String(e.reps||""),repCount:totalReps,rir:e.rir??"",volume,checked:!!checks[k]});
+     }
+   });
+ });
+ return out;
+}
+function csvCell(v){const s=String(v??"");return '"'+s.replace(/"/g,'""')+'"'}
+function downloadFile(filename,content,type){
+ const blob=new Blob([content],{type});
+ const url=URL.createObjectURL(blob);
+ const a=document.createElement("a");a.href=url;a.download=filename;a.style.display="none";
+ document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);
+}
+function toCSV(rows){
+ const header=["data","dia","exercicio","prescricao","carga_kg","repeticoes_por_serie","total_repeticoes","RIR","volume_carga_x_reps","marcado_concluido"];
+ return "\ufeff"+[header,...rows.map(r=>[r.date,r.dayId,r.exercise,r.prescription,r.load,r.reps,r.repCount,r.rir,r.volume,r.checked?"sim":"nao"])].map(row=>row.map(csvCell).join(";")).join("\r\n");
+}
+function exportCSV(days){
+ const all=allExerciseEntries();
+ const cutoff=new Date();cutoff.setHours(0,0,0,0);cutoff.setDate(cutoff.getDate()-(days-1));
+ const dateCutoff=`${cutoff.getFullYear()}-${String(cutoff.getMonth()+1).padStart(2,"0")}-${String(cutoff.getDate()).padStart(2,"0")}`;
+ const rows=days?all.filter(r=>r.date>=dateCutoff):all;
+ if(!rows.length){$("backupStatus").textContent="Ainda não há registros de carga/repetições no período escolhido para exportar.";return}
+ downloadFile(days?`treino_ultimos_7_dias_${todayKey()}.csv`:`historico_treino_completo_${todayKey()}.csv`,toCSV(rows),"text/csv;charset=utf-8");
+ $("backupStatus").textContent=`CSV exportado com ${rows.length} registros. No iPhone, procure o arquivo em Arquivos/Downloads ou na pasta de downloads do Safari.`;
+}
+function exportBackup(){
+ const payload={app:"Meu Treino — Hipertrofia",schemaVersion:1,exportedAt:new Date().toISOString(),checks,logs};
+ downloadFile(`backup_meu_treino_${todayKey()}.json`,JSON.stringify(payload,null,2),"application/json;charset=utf-8");
+ $("backupStatus").textContent="Backup JSON exportado. Guarde-o fora do Safari para proteger seu histórico.";
+}
+function restoreBackup(file){
+ const reader=new FileReader();
+ reader.onload=()=>{
+   try{
+     const obj=JSON.parse(reader.result);
+     if(!obj||typeof obj!=="object"||!obj.logs||typeof obj.logs!=="object"||!obj.checks||typeof obj.checks!=="object") throw new Error("Formato inválido");
+     if(!confirm("Restaurar este backup? Os dados atuais serão mesclados com o arquivo; registros com a mesma data/exercício do arquivo substituirão os atuais.")) return;
+     const mergedChecks={...checks,...obj.checks};
+     const mergedLogs={...logs};
+     Object.keys(obj.logs).forEach(date=>{
+       mergedLogs[date]={...(mergedLogs[date]||{}),...(obj.logs[date]||{})};
+     });
+     localStorage.setItem("meuTreinoChecks",JSON.stringify(mergedChecks));
+     localStorage.setItem("meuTreinoLogs",JSON.stringify(mergedLogs));
+     checks=mergedChecks;logs=mergedLogs;render();renderDashboard();
+     $("backupStatus").textContent="Backup restaurado e mesclado. Os registros existentes de outras datas foram preservados.";
+   }catch(e){$("backupStatus").textContent="Não foi possível restaurar: arquivo JSON inválido ou incompatível."}
+ };
+ reader.readAsText(file);
+}
+function renderDashboard(){
+ const entries=allExerciseEntries();
+ $("statExercises").textContent=new Set(entries.map(e=>e.exercise)).size;
+ $("statSessions").textContent=new Set(entries.map(e=>e.date)).size;
+ const byExercise={};
+ entries.forEach(e=>{
+   if(!byExercise[e.exercise])byExercise[e.exercise]={name:e.exercise,totalVolume:0,maxLoad:0,maxReps:0,lastDate:e.date,days:0,volumeByDate:{}};
+   const x=byExercise[e.exercise];x.totalVolume+=e.volume;x.maxLoad=Math.max(x.maxLoad,e.load);x.maxReps=Math.max(x.maxReps,e.repCount);x.days++;
+   x.volumeByDate[e.date]=(x.volumeByDate[e.date]||0)+e.volume;
+   if(e.date>x.lastDate)x.lastDate=e.date;
+ });
+ const ranked=Object.values(byExercise).sort((a,b)=>b.totalVolume-a.totalVolume).slice(0,8);
+ if(!ranked.length){$("charts").innerHTML='<p class="smallnote">Registre carga e repetições em alguns treinos para gerar os gráficos.</p>';$("records").innerHTML='<p class="smallnote">Seus recordes aparecerão aqui depois dos primeiros registros.</p>';return}
+ const maxVol=Math.max(1,...ranked.map(x=>x.totalVolume));
+ $("charts").innerHTML=ranked.map(x=>`<div class="chartrow"><div class="chartlabel">${safe(x.name)}</div><div class="barbg"><div class="barfill" style="width:${Math.max(2,x.totalVolume/maxVol*100)}%"></div></div><div>${Math.round(x.totalVolume).toLocaleString("pt-BR")}</div></div>`).join("");
+ const prs=Object.values(byExercise).sort((a,b)=>a.name.localeCompare(b.name,"pt-BR"));
+ $("records").innerHTML=prs.map(x=>`<div class="record"><strong>${safe(x.name)}</strong><span>Maior carga: ${x.maxLoad?x.maxLoad+" kg":"—"} · Maior total de reps numa sessão: ${x.maxReps||"—"} · Último registro: ${x.lastDate.split("-").reverse().join("/")}</span></div>`).join("");
+}
+function exerciseArt(name){
+ // Fotos reais do catálogo público Free Exercise DB. IDs de imagem confirmados.
+ // Cada item tem uma referência específica; a remada apoiada usa uma remada equivalente.
+ const map=[
+  [/puxada alta com pegada neutra/i,'Close-Grip_Front_Lat_Pulldown'],
+  [/remada com apoio no peito/i,'Bent_Over_Two-Dumbbell_Row'],
+  [/remada sentada na polia/i,'Seated_Cable_Rows'],
+  [/crucifixo inverso na máquina/i,'Bent_Over_Reverse_Fly'],
+  [/hack squat ou leg press/i,'Leg_Press'],
+  [/cadeira flexora/i,'Lying_Leg_Curls'],
+  [/levantamento romeno/i,'Romanian_Deadlift'],
+  [/cadeira extensora/i,'Leg_Extensions'],
+  [/panturrilha em pé/i,'Standing_Dumbbell_Calf_Raise'],
+  [/supino inclinado na máquina ou smith/i,'Incline_Dumbbell_Press'],
+  [/chest press reto na máquina/i,'Barbell_Bench_Press'],
+  [/cross de baixo para cima/i,'Incline_Cable_Flye'],
+  [/elevação lateral na máquina ou polia/i,'Side_Lateral_Raise'],
+  [/supino inclinado com halteres ou máquina/i,'Incline_Dumbbell_Press'],
+  [/crucifixo na máquina/i,'Incline_Dumbbell_Flyes'],
+  [/tríceps na polia com corda/i,'Triceps_Pushdown'],
+  [/extensão de tríceps unilateral na polia/i,'Triceps_Pushdown'],
+  [/puxada alta na máquina/i,'Close-Grip_Front_Lat_Pulldown'],
+  [/remada unilateral na polia/i,'One_Arm_Dumbbell_Row'],
+  [/pullover na polia/i,'Straight-Arm_Pulldown'],
+  [/bíceps/i,'Dumbbell_Biceps_Curl'],
+  [/elevação lateral na máquina/i,'Side_Lateral_Raise'],
+  [/crucifixo inverso na polia/i,'Bent_Over_Reverse_Fly'],
+  [/abdutora/i,'Adductor'],
+  [/abdominal no banco declinado/i,'Decline_Crunch'],
+  [/abdominal na polia/i,'Cable_Crunch'],
+  [/caminhada ou bicicleta leve/i,'Air_Bike'],
+  [/mobilidade confortável/i,'Arm_Circles'],
+  [/preparar a próxima semana/i,'Arm_Circles']
+ ];
+ let id='Seated_Cable_Rows';
+ for(const [pattern,candidate] of map){if(pattern.test(name)){id=candidate;break}}
+ const base='https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/';
+ const url=base+id+'/0.jpg';
+ const fallback=base+'Seated_Cable_Rows/0.jpg';
+ const alt=safe(name+' — foto demonstrativa');
+ return `<div class="exercise-art" title="${alt}"><img class="exercise-photo" src="${url}" alt="${alt}" loading="lazy" onerror="if(!this.dataset.triedFallback){this.dataset.triedFallback='1';this.src='${fallback}';}else{this.onerror=null;this.style.display='none';this.parentElement.classList.add('photo-unavailable')}"><span class="photo-unavailable-label">Imagem indisponível</span></div>`;
+}
+
+function migrateExistingData(){
+ // The original app already uses these keys. Read them unchanged; never clear or rename them.
+ try{
+   const oldChecks=localStorage.getItem("meuTreinoChecks");
+   const oldLogs=localStorage.getItem("meuTreinoLogs");
+   if(oldChecks){const parsed=JSON.parse(oldChecks);if(parsed&&typeof parsed==="object")checks={...parsed,...checks}}
+   if(oldLogs){const parsed=JSON.parse(oldLogs);if(parsed&&typeof parsed==="object")logs={...parsed,...logs}}
+   save();saveLogs();
+ }catch(e){/* keep existing browser data untouched if parsing fails */}
+}
+function render(){
+ const p=plans.find(x=>x.id===selected);
+ $("days").innerHTML=plans.map(x=>`<button class="day ${x.id===selected?"active":""}" data-day="${x.id}">${x.id}<small>${x.label}</small></button>`).join("");
+ document.querySelectorAll("[data-day]").forEach(b=>b.addEventListener("click",()=>{selected=b.dataset.day;render()}));
+ $("dayTitle").textContent=p.title;
+ $("daySubtitle").textContent=selected==="DOM"?"Mantenha o hábito sem treino pesado.":"Siga a ficha; não troque o músculo por impulso.";
+ $("cardioText").textContent=p.cardio;
+ $("extraNote").textContent=p.note||"";
+ const date=todayKey();
+ $("exercises").innerHTML=p.items.map((it,i)=>{
+   const k=selected+"-"+i, checked=!!checks[k], entry=(logs[date]||{})[k]||{};
+   const previousDates=Object.keys(logs).filter(d=>d<date && logs[d][k] && (logs[d][k].load||logs[d][k].reps)).sort().reverse();
+   const previous=previousDates.length ? logs[previousDates[0]][k] : null;
+   return `<div class="exercise ${checked?"done":""}">
+    <input type="checkbox" data-key="${k}" ${checked?"checked":""} aria-label="Marcar ${safe(it[0])} como concluído">
+    ${exerciseArt(it[0])}
+    <div class="exercise-main"><div class="exname">${safe(it[0])}</div><div class="sets">${safe(it[1])}</div>
+    <div class="logbox"><div class="logtitle">REGISTRO DE HOJE · ${date.split("-").reverse().join("/")}</div>
+      <div class="loggrid">
+       <div class="logfield"><label for="load-${i}">Carga (kg)</label><input id="load-${i}" type="number" min="0" step="0.5" inputmode="decimal" placeholder="Ex. 30" data-log="${k}" data-field="load" value="${safe(entry.load||"")}"></div>
+       <div class="logfield"><label for="reps-${i}">Reps por série</label><input id="reps-${i}" type="text" inputmode="numeric" placeholder="Ex. 10, 9, 8" data-log="${k}" data-field="reps" value="${safe(entry.reps||"")}"></div>
+       <div class="logfield"><label for="rir-${i}">RIR final</label><input id="rir-${i}" type="number" min="0" max="10" step="1" inputmode="numeric" placeholder="Ex. 2" data-log="${k}" data-field="rir" value="${safe(entry.rir||"")}"></div>
+      </div>
+      ${previous?`<div class="history">Último registro (${previousDates[0].split("-").reverse().join("/")}): ${previous.load?safe(previous.load)+" kg":""}${previous.reps?" · reps "+safe(previous.reps):""}${previous.rir!==undefined && previous.rir!==""?" · RIR "+safe(previous.rir):""}</div>`:""}
+    </div></div></div>`;
+ }).join("");
+ document.querySelectorAll("[data-key]").forEach(c=>c.addEventListener("change",()=>{checks[c.dataset.key]=c.checked;save();render();renderDashboard()}));
+ document.querySelectorAll("[data-log]").forEach(inp=>inp.addEventListener("change",()=>{
+   const d=todayKey(), k=inp.dataset.log, field=inp.dataset.field;
+   if(!logs[d])logs[d]={};
+   if(!logs[d][k])logs[d][k]={};
+   logs[d][k][field]=inp.value;
+   saveLogs();
+   render();renderDashboard();
+ }));
+ const count=p.items.filter((it,i)=>checks[selected+"-"+i]).length;
+ $("progress").textContent=`${count}/${p.items.length} concluídos`;
+ $("fill").style.width=(count/p.items.length*100)+"%";
+}
+$("reset").addEventListener("click",()=>{plans.find(p=>p.id===selected).items.forEach((it,i)=>delete checks[selected+"-"+i]);save();render();renderDashboard()});
+$("exportCsv").addEventListener("click",()=>exportCSV(7));
+$("exportAllCsv").addEventListener("click",()=>exportCSV(null));
+$("backupJson").addEventListener("click",exportBackup);
+$("restoreJson").addEventListener("click",()=>$("restoreFile").click());
+$("restoreFile").addEventListener("change",e=>{const f=e.target.files&&e.target.files[0];if(f)restoreBackup(f);e.target.value=""});
+$("today").addEventListener("click",()=>{selected=dayOrder[new Date().getDay()];render()});
+migrateExistingData();
+render();
+renderDashboard();
+</script>
+</body>
+</html>
